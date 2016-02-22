@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+
+
+<div class="container ">
+  <div class="left">
+    <div>
+        <div class="page-header">
+          <h4><a href="/blog/{{post.id}}">{{ post.title }}</h4></a>
+        </div>
+          <p>{{ post.body|safe|linebreaks }}</p>
+          <p><a class="btn btn-default"  role="button">  on {{ post.created }}</a></p> 
+    </div>
+  </div>
+</div>
+
+                     
+        
+        {% if not forloop.last %}, {% endif %}
+                   
+             
+            </div
+        
+    </div>
+</div>
+
+               
+            
+ 
+            
+
+{% endblock %}
+
+
+

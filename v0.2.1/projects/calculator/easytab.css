@@ -1,0 +1,58 @@
+body {
+	overflow:hidden;
+	text-align:center;
+}
+
+.tabs {
+	padding:0px;
+	margin:0 auto;
+}
+
+.tabs li {
+	display:inline-block;
+	font-variant:small-caps;
+	font-size:140%;
+	padding:5px 15px;
+	border-bottom:3px solid #f3f3f3;
+	min-width:20%;
+	text-align:center;
+}
+
+@media screen and (max-width:380px) {
+	.tabs li {
+		font-size:100%;
+		padding:2px 5px;
+	}
+}
+
+.tabs .active {
+	border-color:#33b5e5;
+}
+
+.tabs section {
+	display:none;
+}
+
+.tabview .contents {
+	position:relative;
+	width:80%;
+	margin:0 auto;
+}
+
+@media screen and (max-width:700px) {
+	.tabview .contents {
+		width:100%;
+	}
+}
+
+.tabview .contents section {
+	position:absolute;
+	width:100%;
+	transition: margin-left 0.5s, opacity 0.5s;
+	-moz-transition: margin-left 0.5s, opacity 0.5s;
+	-webkit-transition: margin-left 0.5s, opacity 0.5s;
+}
+
+.tabview .contents section:not(:first-child) {
+	opacity:0.3;
+}

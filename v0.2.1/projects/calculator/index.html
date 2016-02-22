@@ -1,0 +1,52 @@
+<!doctype html>
+<html manifest="manifest.appcache">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<title>Ubercalc</title>
+<!--<link rel="stylesheet" href="ubercalc.css">
+<link rel="stylesheet" href="easytab.css">
+<link rel="stylesheet" href="toast.css">-->
+<link rel="stylesheet" href="compiled.css">
+</head>
+<body>
+<div id="calctabs" class="tabview">
+	<ul class="tabs">
+		<li data-id="basic">basic</li>
+		<li data-id="scientific">scientific</li>
+		<li data-id="statistics">statistics</li>
+	</ul>
+	<div class="contents">
+		<section id="basic">
+			<table class="calculator">
+				<thead>
+					<tr><td colspan="4"><input type="text"><button style="font-family:Arial;" class="back"><img style="vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAAcCAQAAABip59/AAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAm0lEQVRIx72W2xKAIAhE4/8/mh5qGlRWBG15K4UjFxHR628RrSwlRAXakUPuQcTzW8X7ioNi9QBiNLkG6XdBhG8uhvgHcxDY1BzirbqIvJnI8w5RCcZMb0DUUhr5ZhA7hYn0GsQ6oN0d5+5F5AD93cd6HyIPsJCoOFgIQqAo6aYULeXqURoIpQ1SmjnlSaI8rJTxgDLkUEa1c3IDsZHMAQGFuvkAAAAASUVORK5CYII=" ></button></td></tr>
+				</thead>
+				<tbody data-section="basic"></tbody>
+			</table>
+		</section>
+		<section id="scientific">
+			<table class="calculator">
+				<thead>
+					<tr><td colspan="4"><input type="text"><button class="back"><img style="vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAAcCAQAAABip59/AAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAm0lEQVRIx72W2xKAIAhE4/8/mh5qGlRWBG15K4UjFxHR628RrSwlRAXakUPuQcTzW8X7ioNi9QBiNLkG6XdBhG8uhvgHcxDY1BzirbqIvJnI8w5RCcZMb0DUUhr5ZhA7hYn0GsQ6oN0d5+5F5AD93cd6HyIPsJCoOFgIQqAo6aYULeXqURoIpQ1SmjnlSaI8rJTxgDLkUEa1c3IDsZHMAQGFuvkAAAAASUVORK5CYII=" ></button></td></tr>
+				</thead>
+				<tbody data-section="advanced1"></tbody>
+				<tbody data-section="basic2"></tbody>
+			</table>
+		</section>
+		<section id="statistics">
+			<table class="calculator">
+				<thead>
+					<tr><td colspan="4"><input type="text"><button class="back"><img style="vertical-align:middle;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAAcCAQAAABip59/AAAAAXNSR0IArs4c6QAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAm0lEQVRIx72W2xKAIAhE4/8/mh5qGlRWBG15K4UjFxHR628RrSwlRAXakUPuQcTzW8X7ioNi9QBiNLkG6XdBhG8uhvgHcxDY1BzirbqIvJnI8w5RCcZMb0DUUhr5ZhA7hYn0GsQ6oN0d5+5F5AD93cd6HyIPsJCoOFgIQqAo6aYULeXqURoIpQ1SmjnlSaI8rJTxgDLkUEa1c3IDsZHMAQGFuvkAAAAASUVORK5CYII=" ></button></td></tr>
+				</thead>
+				<tbody data-section="statadvanced"></tbody>
+				<tbody data-section="statbasic"></tbody>
+			</table>
+		</section>
+
+	</div>
+</div>
+<script type="text/javascript" data-main="compiled" src="scripts/require.js"></script>
+<!-- <script type="text/javascript" data-main="scripts/ubercalc" src="scripts/require.js"></script> -->
+</body>
+</html>
