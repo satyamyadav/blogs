@@ -46,33 +46,36 @@ so I started building something when I started learning web.
 ###Showcase
 ==========================================================================
   
-Direct links:
-  
-  1. [v0.1.0](http://satyamyadav.github.io/blog/v0.1.0)
-  2. [v0.1.1](http://satyamyadav.github.io/blog/v0.1.1)
-  3. [v0.2.0](http://satyamyadav.github.io/blog/v0.2.0)
-  4. [v0.2.1](http://satyamyadav.github.io/blog/v0.2.1)
-  5. [v0.2.2](http://satyamyadav.github.io/blog/v0.2.2)
-  6. [v0.3.0](http://satyamyadav.github.io/blog/v0.3.0)
     
 version v0.4.0 is currently my home for gh-pages [here](http://satyamyadav.github.io)  
 
-=============================================================================
 
-###[v0.1.0](http://satyamyadav.github.io/blog/v0.1.0)
+| link            | type          |  framework                 |    languages  |  host        |
+|-----------------|:-------------:|:--------------------------:|:-------------:|:------------:|
+|[v0.1.0][url-010]| static        | none                       |  html css     | github       |
+|[v0.1.1][url-011]| static        | none                       |  html css     | github       |
+|[v0.2.0][url-020]| static        | PixelKit-Bootstrap-UI-Kits |  html css     | github       |
+|[v0.2.1][url-021]| static        | PixelKit-Bootstrap-UI-Kits |  html css     | github       |
+|[v0.2.2][url-022]| dynamic       | django, bootstrap          |  html css python | openshift |
+|[v0.3.0][url-030]| static        | pelican                    |  markdown python | github    |
 
-|details        |               |
-|---------------|:-------------:|
-| type:         |  static       |
-| pages:        | 3             |
-| framework:    | none          |
-| languages:    | html, css     |  
-| host:         | github (static)|
-| link          | [v0.1.0][url-010]|
+
+
 
 Screenshots:
   
 ![Alt text][img-010]
 
-[img-010]: v0.1.0/mypic/mypic1.jpg
+[img-010]: http://satyamyadav.github.io/img/screenshots/010.jpg
+[img-011]: http://satyamyadav.github.io/img/screenshots/011.jpg
+[img-020]: http://satyamyadav.github.io/img/screenshots/020.jpg
+[img-021]: http://satyamyadav.github.io/img/screenshots/021.jpg
+[img-022]: http://satyamyadav.github.io/img/screenshots/022.jpg
+[img-030]: http://satyamyadav.github.io/img/screenshots/030.jpg
+
 [url-010]: http://satyamyadav.github.io/blog/v0.1.0  
+[url-011]: http://satyamyadav.github.io/blog/v0.1.1  
+[url-020]: http://satyamyadav.github.io/blog/v0.2.0  
+[url-021]: http://satyamyadav.github.io/blog/v0.2.1  
+[url-022]: http://satyamyadav.github.io/blog/v0.2.2  
+[url-030]: http://satyamyadav.github.io/blog/v0.3.0  
