@@ -1,0 +1,1521 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SCRIET</title>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+    
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.2.min.css">
+<!--	<link rel="stylesheet" href="css/jqm-demos.css">-->
+	<script src="js/jquery.js"></script>
+
+	<script src="js/jquery.mobile-1.4.2.min.js"></script>
+
+
+  <script type="text/javascript">
+$(document).on("pagecontainerload",function(event,data){
+  alert("swipe");
+});
+
+
+$( document ).on( "pageinit", "body", function() {
+    $( document ).on( "swipeleft swiperight", "body", function( e ) {
+        // We check if there is no open panel on the page because otherwise
+        // a swipe to close the left panel would also open the right panel (and v.v.).
+        // We do this by checking the data that the framework stores on the page element (panel: open).
+        if ( $.mobile.activePage.jqmData( "popup" ) !== "open" ) {
+            if ( e.type === "swipeleft"  ) {
+                $( "#swipeleft" ).popup( "open" );
+            } else if ( e.type === "swiperight" ) {
+                $( "#popup-outside-page" ).popup( "open" );
+            }
+        }
+    });
+});
+
+// Instantiate the popup on DOMReady, and enhance its contents
+// Instantiate the popup on DOMReady, and enhance its contents
+$( function() {
+    $( "#popup-outside-page" ).enhanceWithin().popup();
+    $( "#swipeleft" ).enhanceWithin().popup();
+});
+
+
+$(function() {
+    $( "[data-role='navbar']" ).navbar();
+    $( "[data-role='header'], [data-role='footer']" ).toolbar();
+});
+// Update the contents of the toolbars
+$( document ).on( "pageshow", "[data-role='page']", function() {
+    // Each of the four pages in this demo has a data-title attribute
+    // which value is equal to the text of the nav button
+    // For example, on first page: <div data-role="page" data-title="Info">
+    var current = $( this ).jqmData( "title" );
+    // Change the heading
+    $( "[data-role='header'] h3" ).text( current );
+    // Remove active class from nav buttons
+    $( "[data-role='navbar'] a.ui-btn-active" ).removeClass( "ui-btn-active" );
+    // Add active class to current nav button
+    $( "[data-role='navbar'] a" ).each(function() {
+        if ( $( this ).text() === current ) {
+            $( this ).addClass( "ui-btn-active" );
+        }
+    });
+});
+
+
+
+
+// Define a click binding for all anchors in the page
+$( "a" ).on( "click", function( event ) {
+
+  // Prevent the usual navigation behavior
+  event.preventDefault();
+
+  // Alter the url according to the anchor's href attribute, and
+  // store the data-foo attribute information with the url
+  $.mobile.navigate( $(this).attr( "href" ), {
+    foo: $(this).attr("data-foo")
+  });
+
+  // Hypothetical content alteration based on the url. E.g, make
+  // an Ajax request for JSON data and render a template into the page.
+  alterContent( $(this).attr("href") );
+});
+
+
+
+
+
+
+
+
+
+  </script>
+
+
+
+	<style>
+		/* Swipe works with mouse as well but often causes text selection. */
+		#demo-page * {
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			-o-user-select: none;
+			user-select: none;
+		}
+		/* Content styling. */
+		dl { font-family: "Times New Roman", Times, serif; padding: 1em; }
+		dt { font-size: 2em; font-weight: bold; }
+		dt span { font-size: .5em; color: #777; margin-left: .5em; }
+		dd { font-size: 1.25em;	margin: 1em 0 0; padding-bottom: 1em; border-bottom: 1px solid #eee; }
+		.back-btn { float: right; margin: 0 2em 1em 0; }
+	
+    
+    .ui-li-static.ui-collapsible > .ui-collapsible-heading {
+    margin: 0;
+}
+.ui-li-static.ui-collapsible {
+    padding: 0;
+}
+.ui-li-static.ui-collapsible > .ui-collapsible-heading > .ui-btn {
+    border-top-width: 0;
+}
+.ui-li-static.ui-collapsible > .ui-collapsible-heading.ui-collapsible-heading-collapsed > .ui-btn,
+.ui-li-static.ui-collapsible > .ui-collapsible-content {
+    border-bottom-width: 0;
+}
+
+
+.ui-page { 
+              background-image: url("http://satyamyadav.netne.net/scrietapp/content.png");
+              background-repeat:repeat; 
+              }
+
+
+body  {background-image: url("content.png");
+              background-repeat:repeat; 
+              }
+
+.ui-content h3 {text-align: center; white-space: normal; color: #244D57;}
+.ui-content { 
+              background-image: url("content.png");
+              background-repeat:repeat; 
+              }
+
+.ui-header {  
+              white-space: normal;
+              background:#133343;
+              color: white;
+              font-weight: lighter;
+              text-shadow: none;
+              font-family: sans;
+               }
+
+
+ .ui-title {white-space: normal;
+            font-weight: lighter;
+            text-decoration: none;
+             }              
+
+
+
+
+
+
+    
+
+    </style>
+</head>
+<body>
+
+
+ 
+
+   <div data-role="header" data-position="fixed"  data-theme="a" data-fullscreen="false">
+      <a  href="#menu" data-rel="popup" data-icon="bars" data-iconpos="notext" class=" ui-alt-icon ui-nodisc-icon ui-btn-right" >Menu</a>
+        
+       <div data-role="popup" id="menu" data-theme="b" data-transition="fade"   data-corners="false" data-shadow="false"  data-dismissible="true" data-position-to="origin"  data-history="false" >
+                                        <ul data-role="listview" class="jqm-list ui-alt-icon ui-nodisc-icon ui-listview" data-filter="true" data-input="#filterBasic-input" data-icon="false" >
+                  <li data-icon="home"><a href="#home" data-transition="slide">Home</a></li>
+            <li><a href="#result" data-transition="slide">Result</a></li>
+            <li><a href="#notice" data-transition="slide">Notice</a></li>
+            <li><a href="#admission" data-transition="slide">Admission</a></li>
+            <li><a href="#about" data-transition="slide">  About</a></li>
+           <!-- <li><a href="gallery.html"  data-ajax="false" data-transition="slide" >Gallery</a></li>-->
+              
+     <li data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right" ><h2 >Departments</h2>
+     
+     
+  
+  <ul data-role="listview" data-icon="false">
+        <li><a href="#cs" data-transition="slide" >Computer Science</a></li>
+     <li><a href="#it" data-transition="slide" >Information Tec.</a></li>
+        <li><a href="#ec" data-transition="slide">Electronics & Comm.</a></li>
+        <li><a href="#ei" data-transition="slide">Electronics & Ins.</a></li>
+        <li><a href="#me" data-transition="slide">Mechanical</a></li>
+        <li><a href="#ag" data-transition="slide" >Agricultural</a></li>
+        <li><a href="#ch" data-transition="slide">Chemical</a></li>
+        <li><a href="#mca" data-transition="slide">MCA</a></li>  
+  </ul>
+
+
+</li>         
+
+
+  
+ 
+
+        <li><a href="#hostel" data-transition="slide">Hostel</a></li>
+    <li><a href="#form" data-transition="slide">Form</a></li>
+    <li><a href="#scholarship" data-transition="slide">Scholarship</a></li>
+    <li><a href="#contacts" data-transition="slide">Contact Us</a></li>
+    <li><a href="#vc" data-transition="slide">Vice Chancellor </a></li>
+    <li><a href="#director" data-transition="slide">Director</a></li>            
+    <li><a href="#generalinfo" data-transition="slide">General Information</a></li>
+    <li><a href="#downloads" data-transition="slide" >Downloads</a></li>
+    <li><a href="#developer" data-transition="slide">App Developer</a></li>            
+    
+               
+</ul>             
+
+       </div>
+
+
+
+      <h3>SCRIET</h3>
+     
+</div>
+
+
+
+
+
+<!--=================home=================-->
+
+  <div data-role="page" data-title="SCRIET" data-history="false" id="home" > 
+ 
+    
+            <div data-role="main" class="ui-content">
+
+            <center  >
+      
+           <img width="15%"  class="popphoto"  src="http://satyamyadav.netne.net/scrietapp/img/logo.png" />  
+          
+                 <p>
+                  <h2>Sir Chhotu Ram Institute of Engineering & Technology</h2>
+      
+                             <small>Approved by AICTE</small>
+                </p>
+
+<a href="#popupbanner2" data-rel="popup" data-position-to="window" data-transition="slide"><img class="popphoto" src="http://satyamyadav.netne.net/scrietapp/img/banner2.jpg" alt="SCRIET" style="width:100%"></a>
+      <div data-role="popup" id="popupbanner2" data-overlay-theme="a"  data-corners="false">
+    <a href="#" data-rel="back" data-role="button"  data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><img class="popphoto" src="http://satyamyadav.netne.net/scrietapp/img/banner2.jpg" style="max-height:512px;" alt="SCRIET">
+          
+</div>
+      
+      
+      </center >
+
+      
+ <marquee   direction="left" style="font-size: 16px;   height:30px;  padding:10px; width:90%" >
+   UPTU COUNSELLING CODE: 906&nbsp;&nbsp;*&nbsp;&nbsp;B.Tech Fee Details: <strong>72,000/- Per Year</strong>+ 5,000 (Refundable Security Fee)  *  MCA/MBA/MBA(IB) Fees : 50,000/- + 5000/- (Refundable Security Fee) *  Hostel Fee: <strong>3,300/- Per Year</strong> + 1,000 (Refundable Security Fee)   *    Full Scholarship Will be Provided by Samaj Kalyan Vibhag for Tution Fees*  UPTU Counselling Code -906  *  Direct Admission in 2nd Year for Polytechnic / B.Sc.(PCM) students
+   </marquee>
+   
+ 
+
+     
+</div>
+      
+
+
+
+
+      
+ </div>
+      
+    <!--=================================menu============================-->
+
+
+<!--============================================================== result================ -->
+<div data-role="page" data-title="Result" data-history="false" id="result">
+  
+ 
+
+
+  <div  data-role="main" class="ui-content " >
+      
+      
+      
+      <form   data-role="form" name="frm" action="http://ccsuscriet.org/result2.php" method="post" onSubmit="return valid();">
+<table>
+  
+  <tr>
+    <td >Select Branch</td>
+    <td><select name="branch" id="branch">
+      <option value="CS">CS</option>
+      <option value="AG">AG</option>
+      <option value="ME">ME</option>
+      
+      <option value="IT">IT</option>
+      <option value="EC">EC</option>
+      <option value="EI">EI</option>
+      <option value="CH">CH</option>
+      <option value="MCA">MCA</option>
+    </select>    </td>
+  </tr>
+  <tr>
+    <td>Select Sem</td>
+    <td><select name="sem" id="sem">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+     
+    
+      
+            </select></td>
+  </tr>
+  <tr>
+    <td width="157">Enter your Roll Number</td>
+    <td width="221"><input type="text" name="rollno" id="rollno"></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><label>
+      <input type="submit" name="button" id="button" value="Submit">
+    </label></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<div align="center"></div>
+</form>
+    
+     
+   </div>   
+      
+ 
+    
+
+</div>
+
+<!--======================/result==================-->
+
+<!--===============notice=================-->
+<div data-role="page" data-title="Notice" data-history="false" id="notice">
+
+  
+
+  
+    
+   <div data-role="main" class="ui-content">
+   
+         <ul data-role="list">
+          
+<p><a href="#admission" >UPTU Counselling Code: 906</a></p>
+<p><a href="http://ccsuscriet.org/datesheet.jpg"  target="_blank">External Exam Date Sheet 2014</a></p>
+
+<p><a href="#result" target="_blank">ONLINE RESULT</a></p>
+<p><a href="http://ccsuscriet.org/sportsnotice.php?TB_iframe=true&keepthis=true&height=500&width=700" class="thickbox">Sports Event - 17 Feb</a></p>
+
+<p><a href="http://ccsuscriet.org/alumini.php?TB_iframe=true&keepthis=true&height=500&width=700" class="thickbox">Alumni Registration</a></p>
+
+<p><a href="http://scholarship.up.nic.in/2012_13/INST_POST_SUMM.ASP?DCODE=07" target="blank">Scholarship Holders Lists</a></p>
+</ul>
+      
+</div><!--/notice-->
+
+
+
+</div>
+
+
+<!--=========================admission==================================-->
+ <div data-role="page" data-title="Admission" data-history="false" id="admission" >
+     
+      
+  
+
+  <div  data-role="main" class="ui-content" >
+        
+<form  data-role="form"  name="frm" method="post" action="http://ccsuscriet.org/enquiry.php?cmd=add" onsubmit="return valid();">
+ 
+<table  border="0" align="center" cellpadding="4" cellspacing="1" style="border:1px solid #666666">
+  <tr bgcolor="#CCEBF4">
+    <td  colspan="2" align="center" style="border-bottom:1px solid #666666"><span style="font-size:16px; color:#b02923;"> ONLINE REGISTRATION FOR ADMISSION IN <strong>B.TECH/M.C.A/M.B.A./M.B.A.(IB) 2014-15</strong></span></td>
+  </tr>
+  <tr>
+    <td >Entry Type</td>
+    <td ><select name="etype" id="etype">
+      <option value="Fresh" selected>Fresh</option>
+      <option value="Lateral">Lateral Entry (2nd Year)</option>
+     
+    </select></td>
+  </tr>
+  <tr>
+    <td >Last Qualification</td>
+    <td ><label>
+      <select name="qual" id="qual">
+        <option value="10+2" selected>10+2</option>
+        <option value="BCA">BCA</option>
+        <option value="B.Sc.">B.Sc.</option>
+        <option value="B.B.A.">B.B.A.</option>
+        <option value="3-Year Diploma">3-Year Diploma</option>
+        <option value="B.A">B.A</option>
+        <option value="B.Com">B.Com</option>
+        <option value="Graduate in any Discipline">Graduate in any Discipline</option>
+      </select>
+    </label></td>
+  </tr>
+  <tr>
+    <td >Year of Passing</td>
+    <td ><input type="text" name="yp" id="yp" /></td>
+  </tr>
+  <tr>
+    <td width="49%" >Name</td>
+    <td width="51%" ><label>
+      <input type="text" name="name" id="name" />
+    </label></td>
+  </tr>
+  <tr>
+    <td >Mobile</td>
+    <td ><input type="text" name="mobile" id="mobile" /></td>
+  </tr>
+  <tr>
+    <td >Enter UPTU Rank</td>
+    <td ><input type="text" name="rank" id="rank" /></td>
+  </tr>
+  <tr>
+    <td > PCM Percentage (Only for 10+2 ,Percentage required as per UPTU norms) 
+       <br>
+       B.C.A/B.B.A./B.Sc./3-year Diploma/B.A./B.COM  Percentage </td>
+    <td ><input type="text" name="pc" id="pc" /></td>
+  </tr>
+  <tr>
+    <td >Course Interested</td>
+    <td ><label>
+    <select name="branch" id="branch">
+      <option selected="selected">B.Tech CS</option>
+      <option>B.Tech IT</option>
+      <option>B.Tech EI</option>
+      <option>B.Tech EC</option>
+      <option>B.Tech ME</option>
+      <option>B.Tech AG</option>
+      <option>B.Tech CH</option>
+      <option>MCA</option>
+      <option>M.B.A</option>
+      <option>M.B.A.(IB)</option>
+    </select>
+    </label></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" bgcolor="#666666"><label>
+      <input type="submit" name="button" id="button" value="Submit" />
+    </label></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" ><em>For Any Clarifications Call:</em><br>
+        <br>For B.Tech Query<br>
+        <strong>&nbsp;&nbsp;Mr. Manav Bansal</strong> : 9219225623, 
+        <strong>&nbsp;&nbsp;Mr. Lakshmi Shanker Singh</strong> : 9808622540 <br>
+        For MCA Query<br>
+        <strong>Mr. Vikas Jain</strong> : 9412551880<br>
+        For MBA Query<br>
+        <strong>&nbsp;&nbsp;&nbsp;&nbsp; Dr Trilochan Sharma</strong> : 9411641616 , 
+      <strong> Dr R.K Singh </strong> : 9412707588<br>         </td>
+  </tr>
+</table>
+<p align="center" style="font-size:10px">For Lateral Entry into B.tech 2nd Year (Only for Polytechnic, B.Sc. (PCM))</p>
+</form>  
+      
+      </div>
+
+<script language="javascript">
+function valid()
+{
+if((document.frm.yp.value=="")||(document.frm.name.value=="")||(document.frm.mobile.value=="")||(document.frm.rank.value=="")||(document.frm.pc.value==""))
+{
+alert("Please enter Year of Passing/Name/Mobile/Rank/Percentage");
+return false;
+
+}
+
+
+}
+
+</script>      
+   
+</div>      
+
+<!--=============================about======================================-->
+<div data-role="page" data-title="About" data-history="false" id="about">
+  
+  
+
+                <div class="ui-content" data-them="a" >
+    
+                  <center><img src="http://satyamyadav.netne.net/scrietapp/img/004.jpg" width="50%"></center>
+    <strong>Sir Chhotu Ram Institute of Engineering & Technology</strong> was established in 2002 with the aim of providing quality education in the field of Engineering and Technology. The Institute is a constituent part of the <strong>Ch. Charan Singh University, Meerut.</strong> The Institute started functioning with the admission of students in the B.Tech. courses in seven branches : Electronics & Communication Engineering, Mechanical Engineering, Agricuture Engineering, and Computer Sciences , Information Technology,Chemical Engg, Electronics & Instrumentation. From the academic session 2004 one more B.Tech. branch Electronics & Instrumentation Engineering added to the academic programme of the Institute. In July 2005, a new brach Information Technology was introduced by fabricating the branch Computer Science & information technology.From academic session 2011-2012,the institute has also been entrusted to run M.C.A. programme which was being conducated in the University from 2004.
+<br />
+Engineering education & research is ever demanding field of study since the oldest civilization.industrial deveof nations was made possible by the movement of wheel,but search is on to improve the efficiency is wheel.We have reached from 8% to 40% and the search for still higher efficiency is more vigorously pursued today.The role of engineer is not confined to industries, service centers or workshops but has gone beyond.The half-life period of engineering education has been greatly reduced due to explosion of knowledge and computer database created by R & D.There is an urgent need to keep pace with the development by re-engineering with the course curriculum.
+
+Besides seven Engineering Departments Computer Science Engineering, Information Technology, Electronics & Communication, Electronice & Instrumentation, Mechanical Engineering, Chemical Engineering and Agriculture Engineering and a Division of Applied Science is also been here..
+
+        </div>
+
+        
+
+  </div>
+
+<!--=================================hostel=============================-->  
+  <div data-role="page" data-title="Hostel" data-history="false" id="hostel" >
+  
+
+  <div  data-role="main" class="ui-content" >
+      
+     
+      
+      <a href="#hostelreg"  data-role="button" >Register</a>
+      
+      
+<a href="#hostelsteps" data-rel="popup" data-role="button" >Steps for Hostel Allotment</a>
+      
+    
+
+      
+    
+<div data-role="popup" id="hostelsteps"  style="max-width:280px">
+    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+    
+      
+      
+     
+<ul data-role="listview">
+<li>Please Select the Course Carefully</li>
+<li>Keep the Photographs of Yourself, Parents, Guardians and Visitors ready in JPG</li>
+<li>Take the Print out of the Form and Challan</li>
+<li>Verify the Form by your HOD / Coordinator / Director</li>
+<li>Verify the Form by your Hostel Warden</li>
+<li>Deposit fees in the Allahabad Bank(C.C.S. University)</li>
+<li>Take the student Copy of your Challan from the Bank</li>
+<li>Hostel Allotment Result will be sent through SMS on your registered Mobile Number</li>
+</ul>
+      
+</div>  
+      
+      
+  
+      <h2 data-role="button">Boys Hostels</h2>
+      
+      <table data-role="table" id="movie-table" data-mode="reflow" class="ui-responsive table-stroke" style="border:1px solid white">
+  <thead>
+    <tr>
+      <th data-priority="1">HOSTEL</th>
+      <th data-priority="persist">YEAR ESTD.</th>
+      <th data-priority="2">CAPACITY (Rooms)</th>
+      <th data-priority="3">WARDEN</abbr></th>
+      <th data-priority="4">ASST. WARDEN</th>
+    </tr>
+  </thead>
+  <tbody>
+      
+    <tr>
+      <th>Dr. K.P. Hostel</th>
+      <td>1970</td>
+      <td>114</td>
+      <td>Dr. Y.P Singh (9411445442)</td>
+      <td>Dr. Dushyant (9412708983)</td>
+    </tr>
+    <tr>
+      <th>Dr. R.K. Singh Hostel</th>
+      <td>1992</td>
+      <td>78</td>
+      <td>Dr. Dinesh Kumar (9412745595)</td>
+      <td>Dr. Alok Kumar (9412357991)</td>
+    </tr>
+    <tr>
+      <th>Dr. B.R. Ambedkar Hostel</th>
+      <td>2000</td>
+      <td>40</td>
+      <td>Dr. Atvir Singh (9837188111)</td>
+      <td>Dr. Beer Pal Singh (9358478150)</td>
+    </tr>
+    <tr>
+      <th>Vir Shiromani Maharana Pratap Hostel</th>
+      <td>2005</td>
+      <td>102</td>
+      <td>Dr. P.K. Sharma (9412781914)</td>
+      <td>Dr. Ravindra Kumar (9411904922)</td>
+    </tr>
+    <tr>
+      <th>New Boys Hostel</th>
+      <td>2009</td>
+      <td>100</td>
+      <td>Dr. A.K. Chaubey (9412083781)</td>
+      <td>Dr. Sanjay (9358403296)</td>
+    </tr>
+    <tr>
+      <th>B.Tech Hostel</th>
+      <td>2011</td>
+      <td>100</td>
+      <td>Col. M.C. Govil (9897361969)</td>
+      <td>Er. Pravin Panwar (9412103540)</td>
+    </tr>
+      </tbody>
+      </table>
+    <br>
+    <h2 data-role="button">Girls Hostels</h2>
+    
+          <table data-role="table" id="movie-table" data-mode="reflow" class="ui-responsive table-stroke" style="border:1px solid white">
+  <thead>
+    <tr>
+      <th data-priority="1">HOSTEL</th>
+      <th data-priority="persist">YEAR ESTD.</th>
+      <th data-priority="2">CAPACITY (Rooms)</th>
+      <th data-priority="3">WARDEN</abbr></th>
+      <th data-priority="4">ASST. WARDEN</th>
+    </tr>
+  </thead>
+  <tbody>                      
+    <tr>
+      <th>Durga Bhabhi Girls Hostel</th>
+      <td>1978</td>
+      <td>186</td>
+      <td>Dr. Jaimala (9837991844)</td>
+      <td>Dr. A.V. Kaur (9410230666)</td>
+    </tr>
+    <tr>
+      <th>New Girls Hostel</th>
+      <td>2005</td>
+      <td>105</td>
+      <td>Prof. Pratibha Tyagi (9719428009)</td>
+      <td>Dr. Alpna Aggarwal (9897012120)</td>
+    </tr>
+    </tbody>
+</table>
+      
+
+      
+     
+      
+    
+     
+   </div>  
+
+ </div>
+
+
+<!--=====================================hostel registration================-->
+
+                   <div data-role="page" data-title="Hostel Registration" data-history="false" id="hostelreg" >
+
+  
+
+<div data-role="main" class="ui-content">
+             
+    <iframe  height="600px"  width="100%" src="http://www.ccsuhostel.com/register.php?cmd=step1"  width="relative" height="relative" seamless></iframe>
+
+</div>
+      
+     </div> 
+
+
+<!---=========================form============================-->
+    
+   <div data-role="page" data-title="Forms" data-history="false" id="form"  >
+    
+     
+ 
+    
+<iframe height="600px"  width="100%"  src="http://www.ccsuniversity.ac.in/new/Download-forms.htm"></iframe>  
+      
+
+</div><!--/form-->
+
+
+<!--====================scholarship======================-->
+
+             <div data-role="page" data-title="Scholarship" data-history="false" id="scholarship" >
+  
+      
+ <iframe height="600px"  width="100%"  src="http://scholarship.up.nic.in/"></iframe> 
+
+</div><!---/scholarship-->
+
+
+
+            <!--===============================contact=======================-->
+   <div data-role="page" data-title="Contacts" data-history="false" id="contacts"  >
+    
+     
+
+
+ <div data-role="main" class="ui-content">
+  
+       
+              <h3 align="center"><strong>Administrative Officer<br>
+  S.C.R.I.E.T., C.C.S. University - Meerut 250001</strong></h3>
+          <div align="center">
+          Phone No. +91 121 2770083, 2774974,2763064 <br>
+  Fax No. +91 121 2760577 
+  <br>
+   E-mail: <a href="mailto:contact@ccsuscriet.org">contact@ccsuscriet.org </a> 
+          </div>
+           
+ <br />
+            
+          <h3 align="center"><strong>Placement Officer<br>
+  S.N. Mishra and Anuj Kumar</strong></h3>
+          <div align="center">
+          Phone No. +91-9897044615
+                  +91 121 2763064 
+
+          </div>
+          
+          
+           
+       
+</div> 
+
+      
+</div><!--=================/contact-->  
+
+
+
+            <!--======================vc===========================================-->
+   <div data-role="page" data-title="Vice Chancellor" data-history="false" id="vc" >
+    
+          
+    <div data-role="main" class="ui-content">
+    
+    <a href="#vcimgpopup" data-rel="popup" data-position-to="window" data-transition="slide"><img class="popphoto" src="http://satyamyadav.netne.net/scrietapp/img/vc.jpg" alt="vc" style="width:30%"></a>    <div data-role="popup" id="vcimgpopup" data-overlay-theme="a" data-theme="d" data-corners="false">
+    <a href="#vc"  data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><img class="popphoto" src="http://satyamyadav.netne.net/scrietapp/img/vc.jpg" style="max-height:512px;" alt="vc">
+</div>
+<br>
+        <span align="left" ><b><i>Vikram Chandra Goel</i></b></span><br>
+<span align="left" >Message from Vice Chancellor</span>
+
+            
+
+            <p>I feel extremely honoured to be the Vice    Chancellor of Ch. Charan Singh University, Meerut (formerly, Meerut    University). The University was established in 1966 to cater to the needs of    higher education, especially in western Uttar Pradesh. It is one of the    premier educational institutions of India. It has vast and beautiful campus    in pollution free environment, which sprawls over 219 acres of land having    vast playgrounds, experimental fields, botanical garden, rose garden, statues    of several great personalities, gymnasium, indoor stadium, well equipped    library, hostels for boys and girls, spacious auditorium, guest house,    community centre, medical centre, weather station, etc. On the University    campus, there are well maintained 20 regular departments of teaching and    research in various faculties, like Agriculture, Art, Education and Science.    Besides, 35 PG programmes of professional courses of various faculties,    including Law, Commerce and above said faculties are also run under self    finance scheme. An institute, named as SCRIET, is also located on the    University campus, which impart education for conferring B.Tech. degree in    various branches of Engineering and Technology. Further, to confer UG and PG    degrees in medical sciences, university has a constituent medical    college&mdash;LLRM Medical College, Meerut.</p>
+
+            <p>Further, there are 560 &nbsp;colleges/institutes affiliated to    the University, which are imparting education for conferring undergraduate    and postgraduate degrees, and diplomas in various disciplines of Agriculture,    Art, Commerce, Education, Law, Medicine, and Science faculties. These    colleges/institutes are spread over seven contiguous districts of western    Uttar Pradesh. So, there are multifaceted challenges before the University    administration, like maintaining standards of teaching and research, smooth    and fair conduct of examinations and timely declaration of results,    maintenance of yearly as well as semester wise academic calendar of the    University and other developmental work. It is a matter of great pleasure    that the University is already actively revising its curricula according to    the latest developments in the respective areas of study.</p>
+
+            <p><br>
+
+              It will be my sincere    endeavor to provide suitable environment&mdash;with transparency, impartiality and    fairness&mdash;to all teaching and non-teaching personnel as well as the students    of the University so that all will work in responsible and coordinated manner    with their full potential to make it possible to fulfill all challenges. I am    sure that, working as a team, we would be able to take the University to the    pinnacle of its glory.</p>
+
+            <p>&nbsp; I hope that the years you will spend at SCRIET will not only be rewarding but most memorable. </p>
+
+            <p>&nbsp;</p>
+
+          <p align="right"><strong class="style5"> <strong>Vikram Chandra Goel&nbsp;</strong><strong>IPS (Retd.)</strong><br>
+
+              <strong>(Ex Director General of Police)<br>
+
+              </strong>Vice Chancellor </strong></p>
+              </div>   
+      
+
+      
+</div><!---/vc-->
+
+
+
+           <!--==========director========================-->
+   <div data-role="page" data-title="Director" data-history="false" id="director" >
+    
+      
+
+    <div data-role="main" class="ui-content">
+    
+    
+   <a href="#directorimgpopup" data-rel="popup" data-position-to="window" data-transition="slide"><img class="popphoto" src="http://satyamyadav.netne.net/scrietapp/img/director.jpg" alt="director" style="width:30%"></a>    <div data-role="popup" id="directorimgpopup" data-overlay-theme="a" data-theme="d" data-corners="false">
+    <a href="#director"  data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><img class="popphoto" src="http://satyamyadav.netne.net/scrietapp/img/director.jpg" style="max-height:512px;" alt="director">
+</div>
+<br>
+        <span align="left" ><b><i>Dr. Sohan Garg</i></b></span><br>
+<span align="left" >Message from Director</span>
+
+            
+
+
+        <p align="left">I take this opportunity to share with you what SCRIET Stands for and what it could be offering to you as a students and as prospective professional engineer and possibly future industrial giant.</p>
+        <p align="left">We offer four year B.Tech. Engineering degree program in seven branches viz. Electronics Communication,Computer science,Information Techonology,Electronic Instrumentation,Mechanical Engineering,Agricultural Engg and Chemical Engg and also three years Master of Computer Application(M.C.A.).</p>
+        <p align="left">the Syllabi of each program is comprehensive in terms of course contents and rigor.Our emphasis remains on the learning in theory,tutorials,laboratories that include a continuous evaluations evaluation of students over each semester.This process helps them to monitor their learning and performance regularly and take necessary corrective steps with the guidance of faculty and assistance from the fellow students.The out of bounds experience component of the programme teaches the student not only the importance of working under university but also the value of physical fitness and labour.</p>
+        <p align="left">one curriculum places stress on group work and close interaction among the students through seminars and group discussions.We believe that this enables you not only to realize your full potential by sharing knowledge with others,but also helps in learn cooperative work,leads to enriching the quality of your work and life.The opportunity for active participation in extra Co-curricular activities,traditions,cultural and social events,shall be highly appreciated by you come in our institutional environment.You will find that faculty members are accessible,students-friendly and highly active.You will have all the support necessary for your over all well being from our Non-Teaching and administrative Staff.A well stocked Library,Modern computer Centre,well equipped laboratories of various streams, hostels and other facilities have been provided to ensure that you have the best environment.</p>
+        <p align="justify" class="content">&nbsp; I hope that your tenure spent at SCRIET will not only be rewarding but most memorable. </p>
+            <p align="right"><strong class="style5">Dr. Sohan Garg </strong><br>
+                <span class="style5">Director,SCRIET</span></p>      
+         
+    </div>  
+</div><!--/director-->
+
+        <!---=================================================-->
+            <!--=========================generalinfo============================-->
+   <div data-role="page" data-title="General Information" data-history="false" id="generalinfo"  >
+    
+    
+<div data-role="main" class="ui-content">
+    
+    
+<ul data-role="listview" data-theme="c">
+<li><a href="http://ccsuscriet.org/sp/admissioninfo.html?keepthis=true" class="thickbox">Admission Information</a></li>
+<li><a href="http://ccsuscriet.org/sp/feestructure.html?keepthis=true" class="thickbox">Fees Structure</a></li>
+ <li><a href="http://ccsuscriet.org/sp/welfare&facilities.html?keepthis=true" class="thickbox">Student Welfare</a></li>
+<li><a href="http://www.ugc.ac.in/page/Ragging-Related-Circulars.aspx" target="_blank">Anti Ragging</a></li>
+<li><a href="http://ccsuscriet.org/files/Placement.xls?keepthis=true" target="_blank">Placement</a></li>
+<li><a href="http://ccsuscriet.org/files/holidays-list-2014.pdf?keepthis=true" target="_blank">List of Holidays</a></li>
+<li><a href="http://ccsuscriet.org/files/calender.jpg" target="_blank">Academic Calendar</a></li>
+<li><a href="http://ccsuscriet.org/sp/timetables.html?keepthis=true" title="Time Table" class="thickbox">Time Tables</a></li>
+
+</ul>      
+      
+
+</div>
+
+</div><!--/generalinfo-->
+        
+        <!--=================================================-->
+            <!--downloads====================-->
+   <div data-role="page" data-title="Downloads" data-history="false" id="downloads" >
+    
+   
+<div data-role="main" class="ui-content"> 
+       
+<ul data-role="listview" >
+ <li><a href="http://ccsuscriet.org/project_guidelines.zip" target="_blank">Project Guidelines for IT Branch</a></li>
+<li><a href="http://uptu.ac.in/academics/syllabus_new.htm" target="_blank">Download Syllabus</a></li>
+<li><a href="http://ccsuscriet.org/sports.doc" target="_blank">Sports Notice</a></li>
+ </ul>
+
+           </div>
+</div><!--/downloads-->
+
+
+
+ <!--||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->     
+
+  
+<!--===============================cs==================--> 
+      <div data-role="page"  data-title="Computer Science" data-history="false" id="cs" >
+                  
+          
+          
+        <div data-role="main" class="ui-content">
+  
+
+     
+
+      The Department of Computer Science Engineering is renowned for its cutting edge and for imparting state of the art education. We attract some of the brightest students and faculty. We invite you to join us in the excitement and be an active participant   in   the   growth  of  the  department.  The aim of the department is to produce software engineers who would be the pillars of the nation. The department is unique in having the qualified faculty in deferent disciplines of Computer Engineering (Database, Networking, Software Development etc.). The department develops not only good professionals in different specialized fields but also a good citizen.
+The curriculum includes courses in major areas like internet networking, software engineering, graphics, and data structure, advanced specialized courses in software and hardware fundamentals. The departments maintains following well equipped labs to impart practical knowledge of the stream. 
+1. Internet Lab.                <br />
+2. Computer Graphics lab.   <br />
+3. Networking Lab.           <br />
+4. Software Engineering Lab.      <br />
+5. Computers Labs (5).       <br />
+      </div>
+  </div>
+<!--========================it=========================-->
+    <div data-role="page" data-title="Iformation Technology" data-history="false" id="it"  >
+                
+               <div data-role="main" class="ui-content"> 
+        
+
+
+          With globalization of the Indian economy, vast opportunities of growth have been thrown open for the computer software and hardware industry. Software being one of the largest growing sectors of the Indian economy, the Department of <b>Information Technology</b> at  Sir Chhotu Ram Institute of Engg. & Tech has been at the forefront to churn out software engineers with a high caliber of technical expertise. It continues to foster the innovation and breadth of vision necessary to excel in the blooming software industry.
+     <br>        
+            The department has highly experienced and talented faculty from reputed technological institutions with some senior faculty having specialization in Web technology, Software Engg., Cryptography, Artificial Intelligence, Net Working, and Multimedia & DBMS. The teaching program has been devised keeping in view close interaction with the industry. The competence of the department is reflected in the growing demand for its fresh graduates. Besides imparting theoretical knowledge, a lot of stress is laid on hands-on training and overall, development of the individual’s personality. The departments have fully equipped labs to meet out this demand.
+      
+      
+    </div>
+    </div>
+    
+    <!---========================ec=========================-->
+    <div data-role="page" data-title="Electronics & Communication" data-history="false" id="ec"  >
+                
+            
+      
+        
+         <div data-role="main" class="ui-content">
+            
+
+               The department of Electronics and Communication was established in July. 2002 and has well qualified and highly experienced teaching staff. 
+            The Electronics and Communication branch deals with analog and digital transmission and reception of data voice and video, basic electronics solid state devices, microprocessors, digital and analog communication, analog integrated circuits satellite communication, microwave engineering, antenna and wave propagation, VLSI and embedded system, digital signal processing. 
+            In order to ensure high standards of education for its students the department constantly upgraded itself by adding well equipped and fully furnished laboratories like:-
+      <div data-role="list">
+1. Basic electronics & electronics Lab.                             <br />                
+2. SCDC. (Semiconductor devices and circuits)                       <br />          
+3. EMMI (Electrical Measurement & Measuring Instrument)               <br />
+4. Network analysis and Synthesis                                   <br />                 
+5. Electrical Machines.                                             <br />                          
+6. FIT. (Fundamental of information Technology)                     <br />         
+7. PCB design. (Printed circuit board design)                           <br />          
+8. Power electronics.                                               <br />                           
+9. ICA (Integrated Circuit & Application)                           <br />                  
+10. Digital   Signal   Processing.                                   <br />
+11. Communication System.                                            <br />
+12. Microprocessor.                                                 <br /> 
+13. Microwave.                                                      <br />
+14. Optical Fiber   Communication.                                  <br />
+15. Electronics Switching.                                          <br />                
+16. TV & Satellite.                                                 <br />
+16. TV & Satellite.                                                 <br />
+17. VLSI.                                                           <br />
+18. Computer Organisation.                                           <br />
+          
+    </div>
+    </div>
+  </div>
+    <!---------------========================ei=========================-------------->
+    <div data-role="page" data-title=" Electronics & Instrumentation" data-history="false" id="ei" >
+                
+           
+          
+      
+         <div data-role="main" class="ui-content">
+           
+                            In Electronics & Instrumentation Engineering, our philosophy is excellence in everything we do. We ensure to provide an excellent experience in a friendly and supportive environment. The Institute has well equipped laboratories that are used to support and reinforce information and concepts presented during lectures and tutorials. <br>
+       There is a great demand from business, industry and education for graduates who are numerate, can handle computers with confidence and are able to communicate. The Deptt of Electronics & Instrumentation Engineering provides the education and training needed  to meet this demand from the most theoretical course that deals with applications at the cutting-edge of modern technology. The well equipped laboratories as listed below enrich the academic atmosphere in specific field.
+      <br>
+1. Network.<br>
+2. SSDC.<br>
+3. EMMI.<br>
+4. FIT <br>
+5. AIC<br>
+6. ADC.   <br>   
+7. Control System.<br> 
+8. Micro Processor.<br>
+9. Transducer.      <br>
+    </div>
+    </div>
+    
+    <!---------------========================me=========================-------------->
+    <div data-role="page" data-title="Mechanical Engineering" data-role="Mechanical Engineering" data-history="false" id="me" >
+                
+           
+        
+      
+         <div data-role="main" class="ui-content">
+  
+
+
+                                  Since the inception in 2002, the Institute is running a 4 years regular B.Tech  course in Mechanical Engineering. A Mechanical Engineer has to design develop, operate and maintain the equipments in an industry. He plays key role in an automobile manufacturing unit, a power or steel plant, hardware or software companies and also in defense, nuclear / space establishment. etc. To cope up with this requirement, experienced and dedicated faculty members focus on imparting quality education, through well planned lecturers, tutorials, and the practical session.<br>
+         The future of Mechanical Engineer is most suited in processing industries, power plants, automobiles and other public and private sector units such as Central and state Govt. Departments, Boards, undertakings etc. <br>
+As  practical  implementation  of  theoretical  learning  is  the hallmark  of  engineering  study hence  keeping in this mind, the Institute has established the entire range of laboratories and workshops as listed below. <br>
+1. Thermal Science Lab.                               <br>
+2. Material Science Lab.                                 <br>
+3. Fluid Mechanics Lab.                                   <br>
+4. Measurement & Metrology Lab.                 <br>
+5. Applied Thermodynamics Lab.                     <br>
+6. Heat & Mass Transfer Lab.                         <br>
+7. Refrigeration & Air-conditioning Lab.<br>
+8. I.C. Engines Lab.      <br>
+9. Automobile Engineering Lab.<br>     
+10. CAD/CAM Lab.      <br>
+11. Engg. Graphics Lab (Hall 1&2)<br>      
+12. Workshop.     <br>
+      
+      
+    </div>
+    </div>
+    
+    <!---------------========================ag=========================-------------->
+    <div data-role="page"  data-title="Agriculture Engineering" data-history="false" id="ag" >
+                
+            
+      
+        
+         <div data-role="main" class="ui-content">
+
+          
+              
+
+                      In western U.P., It is the first Government Institute which started B.Tech in Ag. Engg. programme with best lab facilities of Agricultural Engg. The department has 3.5 acre land for agricultural research purposes. Students have been placed in well known organizations, Processing & Food Industries,  Irrigation  Companies,  Tractor  Industries, NGOs and other industries of India. Those who are interested for higher education have got admission in M.Tech/M.B.A. in reputed college/Universities of the country through GATE/JRF, MAT/CAT.<br>
+            To impart updated practical know how the deptt. maintains following well equipped laboratories. 
+            <br>
+1. Surveying and Levelling Lab.                     <br>
+2. Soil Science Lab.                                    <br>     
+3. Soil Mechanics Lab.                                   <br>
+4. Hydrology Lab.                                          <br>
+5. Irrigation & Drainage Engg. Lab.                <br>
+6. Soil and Water Conservation Engg. lab.    <br>
+7. Food Science Lab.<br>
+8. Post Harvest Engg. of Horticulture crops lab.<br>
+9. Post Harvest Engg. of cerials, pulses and oil seeds Lab.<br> 
+10. Dairy Machinery Lab.<br>
+11. Farm Machinery Lab.<br>
+12. Farm Power Lab.<br>           
+13. Environment Control Engg. Lab.<br>
+      
+    </div>
+    </div>
+    
+    <!---------------========================ce=========================-------------->
+    <div data-role="page" data-title="Chemical Engineering" data-history="false" id="ch"  >
+                
+          
+              <div data-role="main" class="ui-content">
+          
+    
+        
+            B.Tech in Chemical Engineering had been started from the academic year 2008-09 with a capacity of 60 students. In this session, the fourth year of this branch is going on. In the future this branch will prove it self as feathers in the cap of the Institute
+<br>
+The department laboratories are well equipped with sophisticated equipments in all the labs, namely:<br>
+1. Applied Chemistry Lab<br>
+2. Fluid Mechanics Lab<br>
+3. Mechanical Operation Lab<br>          <br>
+4. Heat Transfer Operation Lab<br>
+5. Chemical Reaction Engineering Lab  <br>
+6. Mass transfer Operation Lab <br>
+7. Energy Engineering Lab               <br>
+8. Chemical Technology Lab<br>
+9. Process Instrumentation Lab<br>           
+10. Process Dynamics & Control Lab etc.<br>
+Department is having very well qualified teaching faculties drawn from research and development organizations, industries, government and educational institutes. The department is also equipped with state- of –art teaching materials including multimedia projectors OHP and other visual teaching aids etc.<br>
+      
+Chemical Engineers are employed in diverse range of operations. Some of major recruiters are as follows:<br>
+
+ <table  border="1" cellspacing="0" cellpadding="0" >
+
+            <tr>
+
+              <td  valign="top" class="style15"><p><strong>Type</strong></p></td>
+
+              <td  valign="top" class="style15"><p><strong>Some of    Major Recruiter</strong></p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Refineries</p></td>
+
+              <td  valign="top" class="style15"><p>IOCL, HPCL, OIL, RIL, ONGC etc </p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Fertilizers</p></td>
+
+              <td  valign="top" class="style15"><p>IFFCO, KRIBHCO, RCF, NFL etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Sugar</p></td>
+
+              <td  valign="top" class="style15"><p>Renuka, DSM, Bajaj, Triveni etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Distilleries</p></td>
+
+              <td  valign="top" class="style15"><p>UB, Radicco, Mohan Meakins, CDBL, Segram etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Pharmaceuticals</p></td>
+
+              <td  valign="top" class="style15"><p>Cipla, Dr.Reedy, Ranbaxy, Lupin etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Cosmetics</p></td>
+
+              <td  valign="top" class="style15"><p>HUL etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Textiles</p></td>
+
+              <td  valign="top" class="style15"><p>Reliance etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Paper</p></td>
+
+              <td  valign="top" class="style15"><p>Star, ITC, Century etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Chemical Manufacturing</p></td>
+
+              <td  valign="top" class="style15"><p>DuPont, BASF, Ravi Organics, Gulshan Chemicals,    Orchid Chemicals etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Designing Consultancies</p></td>
+
+              <td  valign="top" class="style15"><p>EIL, PDIL, L&amp;T, SAMSUNG etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Energy Auditing</p></td>
+
+              <td  valign="top" class="style15"><p>TERI, SGS,PDIL etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Defence and Research</p></td>
+
+              <td  valign="top" class="style15"><p>DRDO, ISRO, NPCL, BARC, Ordinance Factories&nbsp; etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Metal</p></td>
+
+              <td  valign="top" class="style15"><p>BALCO, NALCO, SAIL, HINDALCO etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Cement</p></td>
+
+              <td  valign="top" class="style15"><p>Aditya Birla , JP, Shree, JK Luxmi etc</p></td>
+
+            </tr>
+
+            <tr>
+
+              <td  valign="top" class="style15"><p>Automobiles Paint Section</p></td>
+
+              <td  valign="top" class="style15"><p>Maruti, Hyundai, Honda, Toyota etc</p></td>
+
+            </tr>
+
+          </table>
+        </div>
+    </div>
+    
+    <!---------------========================mca=========================-------------->
+    <div data-role="page" data-role="MCA" data-history="false" id="mca" >
+                
+          
+   
+      
+         <div data-role="main" class="ui-content">
+   
+       
+        
+                   The well balanced course significantly emphasizes on planning,designing and buliding of complex commercial application software and system software.The course also palces equal importance on the functional knowledge in various areas.a three yeras full-time MCA course is not just a postgraduate course;it also provides a complite professional grooming for students for a successful career in the modern industry.The main goal of the programme are:-<br>
+
+1. To equip the students with the latest computer hardware and software technologies.
+<br>
+2. Develop conceptual as well as analytical competences in the areas of System Development;Project Management;Network etc.
+<br>
+3. To develop capacity to anticipate and manage change.
+<br>
+4. To sharp the communication and presentation skills.
+<br>
+5. Prepare the students to be able to take decisions under uncertain environment, especially in the area of global marketing.
+      
+      
+        
+    </div>
+    </div>
+
+        
+               <!---=================================================-->
+            <!--developer========================================-->
+   <div data-role="page" data-title="Developer" data-history="false" id="developer" >
+           
+        
+    <div data-role="main" class="ui-content">
+
+       
+
+         
+       <h2 align="center"><strong>Satyam Yadav</strong></h2>
+          <div align="center">
+              SCRIET <br>
+              CS V-sem<br>
+              Phone No. +91 737 686 767 8 <br>
+  
+   E-mail: <a href="mailto:satyamyadav3@gmail.com">satyamyadav3@gmail.com </a><br>
+            <a href="htpp://facebook.com/satyam.py">  fb/satyam.py</a> <br>
+            <a href="htpp://facebook.com/scrietcs">  fb/scrietcs</a><br>
+            <a href="htpp://facebook.com/scrietossdg">  fb/scrietossdg</a><br>
+              <a href="http://satyamyadav.info">http://satyamyadav.info</a><br>
+              
+         </div>
+
+<div>
+  <div class="ss-top-of-page"><div class="ss-form-heading"><h1 class="ss-form-title" dir="ltr">Join us to develop</h1>
+
+
+</div></div>
+<div class="ss-form"><form action="https://docs.google.com/forms/d/10ANIqoFx8tG09tebF-adFgr0xdlD2mm4FoxxzSWTxmA/formResponse" method="POST" id="ss-form" target="_self" onsubmit=""><ol role="list" class="ss-question-list" style="padding-left: 0">
+<div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_1009971840"><div class="ss-q-title">Name
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<input type="text" name="entry.1009971840" value="" class="ss-q-short" id="entry_1009971840" dir="auto" aria-label="Name  " title="">
+<div class="error-message" id="1656661560_errorMessage"></div>
+
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_2127947237"><div class="ss-q-title">Email
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<input type="text" name="entry.2127947237" value="" class="ss-q-short" id="entry_2127947237" dir="auto" aria-label="Email  " title="">
+<div class="error-message" id="970525527_errorMessage"></div>
+
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_1559091525"><div class="ss-q-title">Contact
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<input type="text" name="entry.1559091525" value="" class="ss-q-short" id="entry_1559091525" dir="auto" aria-label="Contact  " title="">
+<div class="error-message" id="218127147_errorMessage"></div>
+
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_1855530942"><div class="ss-q-title">Bio
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<input type="text" name="entry.1855530942" value="" class="ss-q-short" id="entry_1855530942" dir="auto" aria-label="Bio  " title="">
+<div class="error-message" id="969107427_errorMessage"></div>
+
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_1072460115"><div class="ss-q-title">Qualification
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<input type="text" name="entry.1072460115" value="" class="ss-q-short" id="entry_1072460115" dir="auto" aria-label="Qualification  " title="">
+<div class="error-message" id="968753309_errorMessage"></div>
+
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-paragraph-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_109950163"><div class="ss-q-title">what you code?
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<textarea name="entry.109950163" rows="8" cols="0" class="ss-q-long" id="entry_109950163" dir="auto" aria-label="what you code?  "></textarea>
+<div class="error-message" id="1792576849_errorMessage"></div>
+
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-radio"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_1125859372"><div class="ss-q-title">Operating system
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+
+<ul class="ss-choices" role="radiogroup" aria-label="Operating system  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1305392725" value="Linux" id="group_1305392725_1" role="radio" class="ss-q-radio" aria-label="Linux"></span>
+<span class="ss-choice-label">Linux</span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1305392725" value="Mac" id="group_1305392725_2" role="radio" class="ss-q-radio" aria-label="Mac"></span>
+<span class="ss-choice-label">Mac</span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1305392725" value="Windows" id="group_1305392725_3" role="radio" class="ss-q-radio" aria-label="Windows"></span>
+<span class="ss-choice-label">Windows</span>
+</label></li></ul>
+<div class="error-message" id="1125859372_errorMessage"></div>
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-radio"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_2025013565"><div class="ss-q-title">Mobile
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+
+<ul class="ss-choices" role="radiogroup" aria-label="Mobile  "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1457551158" value="Android" id="group_1457551158_1" role="radio" class="ss-q-radio" aria-label="Android"></span>
+<span class="ss-choice-label">Android</span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1457551158" value="IOS" id="group_1457551158_2" role="radio" class="ss-q-radio" aria-label="IOS"></span>
+<span class="ss-choice-label">IOS</span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1457551158" value="Bada" id="group_1457551158_3" role="radio" class="ss-q-radio" aria-label="Bada"></span>
+<span class="ss-choice-label">Bada</span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1457551158" value="Symbian" id="group_1457551158_4" role="radio" class="ss-q-radio" aria-label="Symbian"></span>
+<span class="ss-choice-label">Symbian</span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1457551158" value="Firefox" id="group_1457551158_5" role="radio" class="ss-q-radio" aria-label="Firefox"></span>
+<span class="ss-choice-label">Firefox</span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1457551158" value="Ubuntu" id="group_1457551158_6" role="radio" class="ss-q-radio" aria-label="Ubuntu"></span>
+<span class="ss-choice-label">Ubuntu</span>
+</label></li></ul>
+<div class="error-message" id="2025013565_errorMessage"></div>
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-radio"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_145567176"><div class="ss-q-title">Interested in 
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+
+<ul class="ss-choices" role="radiogroup" aria-label="Interested in   "><li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1775210786" value="web development" id="group_1775210786_1" role="radio" class="ss-q-radio" aria-label="web development"></span>
+<span class="ss-choice-label">web development</span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1775210786" value="android development" id="group_1775210786_2" role="radio" class="ss-q-radio" aria-label="android development"></span>
+<span class="ss-choice-label">android development</span>
+</label></li> <li class="ss-choice-item"><label><span class="ss-choice-item-control goog-inline-block"><input type="radio" name="entry.1775210786" value="system softwares" id="group_1775210786_3" role="radio" class="ss-q-radio" aria-label="system softwares"></span>
+<span class="ss-choice-label">system softwares</span>
+</label></li></ul>
+<div class="error-message" id="145567176_errorMessage"></div>
+</div></div></div>
+<input type="hidden" name="draftResponse" value="[,,&quot;541630314200462708&quot;]
+">
+<input type="hidden" name="pageHistory" value="0">
+
+
+<input type="hidden" name="fbzx" value="541630314200462708">
+
+<div class="ss-item ss-navigate"><table id="navigation-table"><tbody><tr><td class="ss-form-entry goog-inline-block" id="navigation-buttons" dir="ltr">
+<input type="submit" name="submit" value="Submit" id="ss-submit">
+</td>
+</tr></tbody></table></div></ol></form></div>
+
+
+
+
+
+</div>
+
+
+
+                 
+    </div>      
+</div><!---/developer-->   
+  
+<!---=======================help==========================-->
+<div data-role="page" id="help" data-title="Help">
+
+<ul data-role="listview"><li>swipe on screen to open help !</li>
+<li>open menu from top right button!</li>
+<li>if app don't exits, minimise it !</li>
+<li>press device's back button to navigate and exit !</li>
+</ul>
+
+
+</div>
+
+<!---======================review===========================-->
+  <div data-role="page" data-title="Review" id="app_reviews">
+    
+    <div data-role="main" class="ui-content">
+    
+
+
+
+
+<div class="ss-top-of-page"><div class="ss-form-heading"><h1 class="ss-form-title" dir="ltr">Review</h1>
+
+
+
+<div class="ss-form">
+ <!-- <form action="https://docs.google.com/forms/d/16nRjnvkClz4oFn6NVChZC4xYbQNwyYTbRTrsenP4kvs/formResponse" method="POST" id="ss-form" target="_self" onsubmit="">-->
+
+
+    <script type="text/javascript">var submitted=false;</script>
+<iframe name="hidden_iframe" id="hidden_iframe"
+style="display:none;" onload="if(submitted)
+{window.location='#review_response';}"></iframe>
+<form action="https://docs.google.com/forms/d/16nRjnvkClz4oFn6NVChZC4xYbQNwyYTbRTrsenP4kvs/formResponse" method="post"
+target="hidden_iframe" onsubmit="submitted=true;">
+
+
+    <ol role="list" class="ss-question-list" style="padding-left: 0">
+<div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item ss-item-required ss-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_789376829"><div class="ss-q-title">Name
+<label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
+
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<input type="text" name="entry.789376829" value="" class="ss-q-short" id="entry_789376829" dir="auto" aria-label="Name  " aria-required="true" required="" title="">
+<div class="error-message" id="1880380486_errorMessage"></div>
+
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item ss-item-required ss-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_607203567"><div class="ss-q-title">email
+<label for="itemView.getDomIdToLabel()" aria-label="(Required field)"></label>
+
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<input type="text" name="entry.607203567" value="" class="ss-q-short" id="entry_607203567" dir="auto" aria-label="email  " aria-required="true" required="" title="">
+<div class="error-message" id="9413689_errorMessage"></div>
+
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_1699441589"><div class="ss-q-title">contact
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<input type="text" name="entry.1699441589" value="" class="ss-q-short" id="entry_1699441589" dir="auto" aria-label="contact  " title="">
+<div class="error-message" id="760589340_errorMessage"></div>
+
+</div></div></div> <div class="ss-form-question errorbox-good" role="listitem">
+<div dir="ltr" class="ss-item  ss-paragraph-text"><div class="ss-form-entry">
+<label class="ss-q-item-label" for="entry_2133153489"><div class="ss-q-title">Views
+</div>
+<div class="ss-q-help ss-secondary-text" dir="ltr"></div></label>
+<textarea name="entry.2133153489" rows="8" cols="0" class="ss-q-long" id="entry_2133153489" dir="auto" aria-label="Views  "></textarea>
+<div class="error-message" id="471949124_errorMessage"></div>
+
+</div></div></div>
+<input type="hidden" name="draftResponse" value="[,,&quot;2786303072009527267&quot;]
+">
+<input type="hidden" name="pageHistory" value="0">
+
+
+<input type="hidden" name="fbzx" value="2786303072009527267">
+
+<div class="ss-item ss-navigate"><table id="navigation-table"><tbody><tr><td class="ss-form-entry goog-inline-block" id="navigation-buttons" dir="ltr">
+<input type="submit" name="submit" value="Submit" id="ss-submit">
+</td>
+</tr></tbody></table></div></ol></form></div>
+    
+</div>
+</div>
+<!---=================================================-->
+<!--====================site=====================-->
+
+             <div data-role="page" id="collegesite" data-title="College Website" data-history="false"  >
+  
+      
+ <iframe height="600px"  width="100%"  src="http://ccsuscriet.org"></iframe> 
+
+</div><!---/site-->
+<!---=================================================-->
+<!---=================================================-->
+<!---=================================================-->
+<!---=================================================-->    
+    
+<!--===================================menu=================================-->  
+  <div id="popup-outside-page"  data-corners="false" data-shadow="true"  data-dismissible="true" data-position-to="window" data-transition="slide" data-history="false" data-theme="a"><!--//-->
+     <div data-role="main" class="ui-content">
+
+     
+      <!-- <form class="ui-filterable">
+    <input id="filterBasic-input" data-type="search">
+</form>-->
+                 <ul data-role="listview" class="jqm-list ui-alt-icon ui-nodisc-icon ui-listview" data-filter="true" data-input="#filterBasic-input" data-icon="false" >
+                  <li data-icon="home"><a href="#home" data-transition="slide">Home</a></li>
+            <li><a href="#result" data-transition="slide">Result</a></li>
+            <li><a href="#notice" data-transition="slide">Notice</a></li>
+            <li><a href="#admission" data-transition="slide">Admission</a></li>
+            <li><a href="#about" data-transition="slide">  About</a></li>
+         <!--  <li><a href="gallery.html"  data-ajax="false" data-transition="slide" >Gallery</a></li>-->
+              
+     <li data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right" ><h3 >Departments</h3>
+     
+     <div class="ui-content" >
+  
+  <ul data-role="listview" data-icon="false">
+        <li><a href="#cs" data-transition="slide" >Computer Science</a></li>
+     <li><a href="#it" data-transition="slide" >Information Tec.</a></li>
+        <li><a href="#ec" data-transition="slide">Electronics & Comm.</a></li>
+        <li><a href="#ei" data-transition="slide">Electronics & Ins.</a></li>
+        <li><a href="#me" data-transition="slide">Mechanical</a></li>
+        <li><a href="#ag" data-transition="slide" >Agricultural</a></li>
+        <li><a href="#ch" data-transition="slide">Chemical</a></li>
+        <li><a href="#mca" data-transition="slide">MCA</a></li>  
+  </ul>
+
+</div>
+</li>         
+
+
+  
+ 
+
+        <li><a href="#hostel" data-transition="slide">Hostel</a></li>
+    <li><a href="#form" data-transition="slide">Form</a></li>
+    <li><a href="#scholarship" data-transition="slide">Scholarship</a></li>
+    <li><a href="#contacts" data-transition="slide">Contact Us</a></li>
+    <li><a href="#vc" data-transition="slide">Vice Chancellor </a></li>
+    <li><a href="#director" data-transition="slide">Director</a></li>            
+    <li><a href="#generalinfo" data-transition="slide">General Information</a></li>
+    <li><a href="#downloads" data-transition="slide" >Downloads</a></li>
+    <li><a href="#developer" data-transition="slide">App Developer</a></li>            
+    
+               
+</ul>-->
+
+ </div>
+</div>
+
+<!--=============================================================-->
+  <div id="swipeleft"  data-corners="false" data-shadow="true"  data-dismissible="true" data-position-to="window" data-transition="slide" data-history="false" data-theme="a"><!--//-->
+     <div data-role="main" class="ui-content">
+
+     
+    <div data-role="navbar"  data-grid="a">
+    <ul class=" ui-alt-icon ui-nodisc-icon " >
+        <li><a href="#home"  data-icon="home" data-iconpos="top" >Home</a></li>
+        <li><a href="mailto:satyamyadav3@gmail.com" data-icon="mail" data-iconpos="top" >Email</a></li>
+        <li><a href="#developer" data-icon="user" data-iconpos="top" >Developer</a></li>
+       <li><a href="#help" data-icon="info" data-iconpos="top">Help</a></li>
+       <li><a href="#app_reviews" data-icon="comment" data-iconpos="top">Review</a></li>
+       <li><a href="#collegesite" data-icon="cloud" data-iconpos="top">Website</a></li>
+
+    </ul>
+    </div>
+
+ </div>
+</div>
+
+
+    
+
+
+</body>
+</html>    
