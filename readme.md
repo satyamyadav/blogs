@@ -63,8 +63,25 @@ version v0.4.0 is currently my home for gh-pages [here](http://satyamyadav.githu
 
 
 Screenshots:
-  
-![Alt text][img-010]
+
+[v0.1.0][url-010]  
+![blog][img-010]
+
+[v0.1.1][url-011]
+![blog][img-011]
+
+[v0.2.0][url-020]
+![blog][img-020]
+
+[v0.2.1][url-021]
+![blog][img-021]
+
+[v0.2.2][url-022]
+![blog][img-022]
+
+[v0.3.0][url-030]
+![blog][img-030]
+
 
 [img-010]: http://satyamyadav.github.io/img/screenshots/010.jpg
 [img-011]: http://satyamyadav.github.io/img/screenshots/011.jpg
